@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clients>
+	<client>
+		<fname>Jeremy</fname>
+		<lname>Levy</lname>
+  		<number>123-456-78901</number>
+  	</client>
+	<client>
+		<fname>Deborah</fname>
+		<lname>Levy</lname>
+  		<number>123-456-78901</number>
+  	</client>
+  	<client>
+		<fname>Daniel</fname>
+		<lname>Bishop</lname>
+  		<number>123-456-78901</number>
+  	</client>
+  	<client>
+		<fname>Justin</fname>
+		<lname>Levy</lname>
+  		<number>123-456-78901</number>
+  	</client>
+  	<client>
+		<fname>Jen</fname>
+		<lname>Apple</lname>
+  		<number>123-456-78901</number>
+  	</client>
+  	<client>
+		<fname>Jeff</fname>
+		<lname>Dover</lname>
+  		<number>123-456-78901</number>
+  	</client>
+</clients>
