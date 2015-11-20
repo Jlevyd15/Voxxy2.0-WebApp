@@ -1,0 +1,6 @@
+convert array data to string
+
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+document.getElementById("demo").innerHTML = fruits.toString();
+
+<div id="example1" style="width: 200px; height: 200px; overflow: hidden;" data-originalstyle="width: 400px; height: 200px; overflow: hidden" class="handsontable htRowHeaders htColumnHeaders">

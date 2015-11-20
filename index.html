@@ -25,6 +25,8 @@
 
     <!-- Custom styles for this template -->
     <link href="carousel.css" rel="stylesheet">
+    <!-- handsontable stylesheet -->
+    <link href="handsontable-0.20.0/dist/handsontable.full.css" rel="stylesheet" />
   </head>
 <!-- NAVBAR
 ================================================== -->
@@ -146,6 +148,10 @@ function myFunction(xml) {
 -->
       <!-- FOOTER -->
       <footer>
+        <input id="showTableButton" type="button" value="Table Toggler" onClick="showHideTable()"></input>
+        <input id="saveData" type="button" value="Save" onClick="saveTableData()"></input>
+        <div id="exampleGrid" style="width: 280px; height: 400px; overflow: hidden;" data-originalstyle="width: 200px; height: 200px; overflow: hidden" class="handsontable htRowHeaders htColumnHeaders"></div>
+        <p id="testRowData"></p>
         <p class="pull-right"><a href="#">Back to top</a></p><br />
         <p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
       </footer>
@@ -162,6 +168,12 @@ function myFunction(xml) {
     <script src="assets/js/vendor/holder.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="assets/js/custom.js"></script>
+    
+    <!-- My Stuff Below -->
+    <!-- handsontable JS -->
+    <script src="handsontable-0.20.0/dist/handsontable.full.js"></script>
+    <!-- My Custom JS -->
+    <script src="js/custom.js"></script>
+    <!--<script src="js/test.js"></script>-->
   </body>
 </html>
