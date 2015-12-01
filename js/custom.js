@@ -10,10 +10,9 @@ var client1 = {fname:"Joe", lname:"Doe", number:"323-456-7890"};
 
 
 var clientList = [
-
-			["Justin", "Levy", "1-515-858-0000"],
-			["Ringo", "Star", "1-415-345-9597"],
-			["John", "Doe", "1-123-456-9578"]
+	["Justin", "Levy", "1-515-858-0000"],
+	["Ringo", "Star", "1-415-345-9597"],
+	["John", "Doe", "1-123-456-9578"]
 ];
 
 /*
@@ -45,7 +44,7 @@ function printClients(clientObj){
 */
 
 //this function will print clients to the carousel using array notaction.
-function printClients(clientObj){
+function printClientsToCarousel(){
 	
 	/* For Debugging uncomment to print to logs
 	console.log(clientObj[0][0] + " " + clientObj[0][1] + " " + clientObj[0][2]); 
@@ -53,30 +52,38 @@ function printClients(clientObj){
 	y = clientObj[0][2];
 	*/
 try{
+	//loop through client list array and set first & last name to carousel elements
 	for(var i=0; i < clientList.length; i++){
-	var name = "name" + [i];
-	document.getElementById(name).innerHTML = clientList[i][0] + " " + clientList[i][1];
-	}
-
-	for(var i=0; i < clientList.length; i++){
+		var name = "name" + [i];
+		document.getElementById(name).innerHTML = clientList[i][0] + " " + clientList[i][1];
 		var number = "number" + [i];
 		var link = document.getElementById(number);
 		link.innerHTML = clientList[i][2];
 		link.setAttribute('href',"tel:"+clientList[i][2]);
 	}
+	/*
+	//loop through client list array and print number to carousel element
+	for(var z=0; z <= clientList.length-1; z++){
+		var number = "number" + [z];
+		var link = document.getElementById(number);
+		link.innerHTML = clientList[z][2];
+		link.setAttribute('href',"tel:"+clientList[z][2]);
+	}*/
 }catch(err){
-		console.log("Uh Oh! Error!" + err);
+		console.log("Uh Oh! Error! " + err);
 	}
 };
-
+/*
 function listClients(){
 var clientListLength = clientList.length;
 	for(var i=0; i < clientListLength; i++){
 		//add each object and its properties to the carousel
-		printClients(clientList[i]);
+		printClientsToCarousel(clientList[i]);
 	}
 };
-window.onload = listClients();
+window.onload = listClients();*/	
+
+window.onload = printClientsToCarousel();
 
 
 /*
@@ -98,6 +105,7 @@ $(document).ready(function(){
 var rowData;
 var tableData;
 var hot;
+var rowCount;
 function handsontable(){
     
     /*Dummy Data
@@ -110,10 +118,12 @@ function handsontable(){
         */
         container = document.querySelector('#exampleGrid');
 
-	hot = new Handsontable(container, {
-        data: clientList, 
+		hot = new Handsontable(container, {
+        
+     	data: Handsontable.helper.createSpreadsheetData(50, 3), 
 
-        //Handsontable.helper.createSpreadsheetData(50, 50),
+        //clientList, 
+
         //startRows: 100,
         //startCols: 100,
         //fixedRowsTop: 1,
@@ -124,31 +134,62 @@ function handsontable(){
         rowHeaders: true,
         //colHeaders: true,
         colHeaders: ['First Name', 'Last Name', 'Number'],
-        contextMenu: false
+        contextMenu: true
         //afterChange: 
     });
-}
-function setCarouselData(rowcount){
-
+		//hot.clear();
 }
 
 //this function adds the row data to the client objects created above. 
-function addRowDataToObj(rowcount){
-	for(var i=0; i < rowcount; i++){
+function addRowDataToObj(rowCount){
+	for(var i=0; i < rowCount; i++){
 		rowData = hot.getDataAtRow(i);
   		document.getElementById("testRowData").innerHTML += rowData;
 	}
 }
 
-//count number of non empty rows in the table
+//clone the carousel node for each number of rows the user inputs and increment the id by 1
+function cloneCarousel(rowCount){
+	if(rowCount > 1){
+		var cloneId = 2;
+		for (var i = 0; i < rowCount; i++) {
+			//start clone ids at 2 to account for 3 (0,1,2) ids that exist for the demo
+			//$("div.item:last").clone().insertAfter("div.item:last");
+			//incrament the slide indicator for each
+			//$("div.item:last").clone().appendTo("div.carousel-inner");
+			$("div.item:last").clone().appendTo("div.carousel-inner");
+			cloneId = cloneId + 1;
+			$("div.carousel-caption:last").find("h1").attr("id", "name" + cloneId);
+			$("div.carousel-caption:last").find("a").attr("id", "number" + cloneId);
+			//incrament clone id
+			
+		}
+	}
+    	//set id of new name element in the carousel
+    	//$("#name[i]").attr("id", "name"+[i]);
+    	//set id of new number element in the carousel
+    	//$("#number[i]").attr("id", "number"+[i]);
+}
+	
+function Repeat(obj){
+    var CurrentLi = $(obj).parent("li");
+    CurrentLi.clone().insertAfter(CurrentLi);
+  }
+
+//count number of non empty rows in the table; Also subtract 3 from rowCount to account for 3 example carousels that load with page
 function countNonEmptyRows(){
-  var ht = $container.handsontable('getInstance');
-  var rowcount = ht.countRows() - ht.countEmptyRows();
-  return rowcount;
+	var existingRows = 3;
+  //var ht = $container.handsontable('getInstance');
+  var totalrowCount = hot.countRows() - hot.countEmptyRows();
+  rowCount = totalrowCount - existingRows;
+  //console.log("totalrowCount"+totalrowCount);
+  //console.log("rowCount"+rowCount);
+  return rowCount;
 }
 
 function loadTable(){
 	handsontable();
+	hot.clear();
 	//uncomment to hide table by default
 	//$("#exampleGrid").hide();
 }
@@ -161,8 +202,21 @@ function showHideTable(){
 function saveTableData(){
 	tableData = hot.getData();
 	//document.getElementById("testRowData").innerHTML = tableData;
-	clientList = tableData;
-	printClients(clientList);
+	
+	//only add to clientList if tableData rows have data
+	for(var i=0; i < tableData.length; i++){
+		var tableDataZ = tableData[i];
+		for(var j=0; j < tableDataZ.length; j++){
+			if(tableDataZ[j] == ""){break;}
+			console.log("table[" + i + "][" + j + "] = " + tableDataZ[j]);
+			clientList[i]=tableDataZ;
+		}
+	}
+	countNonEmptyRows();
+	console.log(rowCount);
+	console.log(clientList);
+	cloneCarousel(rowCount);
+	printClientsToCarousel();
 }
 /* use Ajax call to save the inputed data to json file on file on webserver's file system
 
